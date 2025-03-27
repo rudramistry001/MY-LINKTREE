@@ -41,11 +41,27 @@ body {
     text-align: center;
     margin-bottom: 30px;
     transform-style: preserve-3d;
-    transition: transform 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: profileCardEntry 1s ease-out;
+}
+
+@keyframes profileCardEntry {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .profile-card:hover {
-    transform: translateZ(20px) rotateX(5deg);
+    transform: translateZ(30px) rotateX(5deg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .profile-image {
@@ -55,6 +71,20 @@ body {
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    transition: all 0.3s ease;
+    animation: profileImagePulse 2s infinite;
+}
+
+@keyframes profileImagePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.profile-image:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .profile-image img {
@@ -79,6 +109,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    perspective: 1000px;
 }
 
 .link-card {
@@ -91,31 +122,87 @@ h1 {
     display: flex;
     align-items: center;
     gap: 15px;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.link-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.link-card:hover::before {
+    left: 100%;
 }
 
 .link-card:hover {
     transform: translateZ(30px) scale(1.05);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .link-card i {
     font-size: 1.5em;
     width: 30px;
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.link-card:hover i {
+    transform: rotate(360deg) scale(1.2);
 }
 
 .link-card span {
     font-size: 1.1em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: transform 0.3s ease;
 }
 
-/* Social Media Colors */
-.fa-instagram { color: #E4405F; }
-.fa-facebook { color: #1877F2; }
-.fa-linkedin { color: #0077B5; }
-.fa-github { color: #333; }
-.fa-code { color: #FFA116; }
+.link-card:hover span {
+    transform: translateX(5px);
+}
+
+/* Enhanced Social Media Icons with Glow Effect */
+.fa-instagram { 
+    color: #E4405F; 
+    text-shadow: 0 0 10px rgba(228, 64, 95, 0.5);
+}
+.fa-facebook { 
+    color: #1877F2; 
+    text-shadow: 0 0 10px rgba(24, 119, 242, 0.5);
+}
+.fa-linkedin { 
+    color: #0077B5; 
+    text-shadow: 0 0 10px rgba(0, 119, 181, 0.5);
+}
+.fa-github { 
+    color: #fff; 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+.fa-code { 
+    color: #FFA116; 
+    text-shadow: 0 0 10px rgba(255, 161, 22, 0.5);
+}
+.fa-reddit {
+    color: #FF4500;
+    text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+}
 
 @media (max-width: 480px) {
     .container {
@@ -128,5 +215,63 @@ h1 {
     
     h1 {
         font-size: 1.5em;
+    }
+}
+
+/* Loading Screen Enhancement */
+.loading-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loader {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    position: relative;
+}
+
+.loader::before,
+.loader::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+.loader::before {
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+    border-top-color: rgba(255, 255, 255, 0.4);
+    animation: spin 3s linear infinite;
+}
+
+.loader::after {
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border-top-color: rgba(255, 255, 255, 0.6);
+    animation: spin 1.5s linear infinite reverse;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 } 
